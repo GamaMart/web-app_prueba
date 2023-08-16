@@ -1,0 +1,106 @@
+
+
+
+<div class="container mt-5">
+<div class="row">
+<div class="col-lg-8 offset-lg-2">
+    <div class="card">
+        <div class="card-body text-center">
+            <span> Lista de tareas </span>
+            <button type="button" class="btn btn-light float-end" (click)="modal.open(contenido)">Nuevo</button>
+            <table *ngIf="listUsuarios.length > 0" class="table table-striped mt-2">
+                <thead>
+                  <tr>
+                    <th scope="col" class="text-center">ID</th>
+                    <th scope="col" class="text-center">Nombre</th>
+                    <th scope="col" class="text-center">Apellido</th>
+                    <th scope="col" class="text-center">Tarea</th>
+                    <th scope="col" class="text-center">Descripcion</th>
+                    <th scope="col" class="text-center">Status</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let usuario of listUsuarios">
+                    <th>1</th>
+                    <td>{{ usuario.nombre }}</td>
+                    <td>{{ usuario.apellidos }}</td>
+                    <td>{{ usuario.tarea }}</td>
+                    <td>{{ usuario.descripcion }}</td>
+                    <td *ngIf="usuario.status == true">Terminada</td>
+                    <td *ngIf="usuario.status == false">Pendiente</td>
+                    <td>
+                        <i [routerLink]="['/modal', usuario._id]"  class="fa-solid fa-pen-to-square text-primary" id="espaCongi"></i>
+                        <i (click)="eliminarUsuario(usuario._id)" class="fa-solid fa-trash text-danger" id="espaCongi"></i>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+        </div>
+
+    </div>
+</div>
+</div>
+</div>
+
+
+<ng-template #contenido let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">{{ titulo | uppercase }}</h4>
+        <button class="close" aria-label="close" type="button" (click)="modal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form action="" class="mt-3" [formGroup]="usuarioForm" (ngSubmit)="agergarUsuario()">
+            <div class="mb-3">
+                <input type="text" class="form-control" placeholder="Nombre" formControlName="nombre">
+                <div class="text-danger" *ngIf="usuarioForm.get('nombre')?.hasError('required') && usuarioForm.get('nombre')?.touched">
+                    <span>El nombre es obligatorio</span>
+                </div>
+            </div>
+            <div class="mb-3">
+                <input type="text" class="form-control" placeholder="Apellidos" formControlName="apellidos">
+                <div class="text-danger" *ngIf="usuarioForm.get('apellidos')?.hasError('required') && usuarioForm.get('apellidos')?.touched">
+                    <span>Los apellidos son obligatorios</span>
+                </div>
+            </div>
+            <div class="mb-3">
+                <input type="text" class="form-control" placeholder="Tarea" formControlName="tarea">
+                <div class="text-danger" *ngIf="usuarioForm.get('tarea')?.hasError('required') && usuarioForm.get('tarea')?.touched">
+                    <span>La tarea es obligatoria</span>
+                </div>
+            </div>
+            <div class="mb-3">
+                <input type="text" class="form-control" placeholder="Descripcion" formControlName="descripcion">
+                <div class="text-danger" *ngIf="usuarioForm.get('descripcion')?.hasError('required') && usuarioForm.get('descripcion')?.touched">
+                    <span>La descripcion es obligatoria</span>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for=""> Status</label>
+                
+                <div class="form-check" *ngIf="usuarioaux==true">
+                    <label class="form-check-label" for="flexCheckChecked">
+                        Terminada
+                      </label>
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked formControlName="valiTarea">
+                </div>
+
+                <div class="form-check" *ngIf="usuarioaux==false">
+                    <label class="form-check-label" for="flexCheckChecked">
+                        Pendiente
+                      </label>
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" formControlName="valiTarea">
+                </div>
+
+            </div>
+
+            <div class="mb-3">
+                <button [routerLink]="['/']" routerLinkActive="router-link-active"  class="btn btn-secondary float-start">Regresar</button>
+                <button class="btn btn-success float-end" type="submit" [disabled]="usuarioForm.invalid">Guardar</button>
+            </div>
+        </form>
+    </div>
+</ng-template>
